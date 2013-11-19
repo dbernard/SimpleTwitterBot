@@ -86,6 +86,7 @@ while true
         simpleBot.wait_for_request()
     rescue Interrupt
         puts "Exiting... "
+        break
     end
 end
 
