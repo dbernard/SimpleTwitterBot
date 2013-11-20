@@ -11,9 +11,10 @@ class Bot
     '''
     @@address = URI("https://api.twitter.com/1.1/statuses/update.json")
 
-    def initialize(name, file)
+    def initialize(name, tweetfile, authfile)
         @name = name
-        @file = file
+        @tweet_file = tweetfile
+        @auth_file = authfile
         @consumer_key = nil
         @access_token = nil
         @authenticated = false
@@ -23,7 +24,7 @@ class Bot
         # BE CAREFUL with your auth.csv file. This information gives anyone
         # access to control over your twitter bot.
         auth = {}
-        CSV.foreach("auth.csv") do |key, value|
+        CSV.foreach(@auth_file) do |key, value|
             auth[key] = value
         end
 
@@ -40,7 +41,7 @@ class Bot
         # wish.
         req = gets.chomp
         if req
-            msg = File.readlines(@file).sample
+            msg = File.readlines(@tweet_file).sample
             tweet("#{msg}")
         end
     end
@@ -76,7 +77,7 @@ class Bot
     end
 end
 
-simpleBot = Bot.new("Simple Bot", "tweets.txt")
+simpleBot = Bot.new("Simple Bot", "tweets.txt", "auth.csv")
 # Comment the line below out to simply print out tweets without sending them.
 simpleBot.authenticate()
 
